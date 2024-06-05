@@ -57,6 +57,25 @@ def upload_file():
     else:
         return jsonify({"success":"false"})
 
+@app.route('/products', methods=['GET'])
+def get_products():
+    data = {}
+    res = db.get_all()
+    data["success"] = "true" 
+    data["res"] = res
+    json_string = json.dumps(data, indent=4)
+    return json_string
+
+@app.route('/init', methods=['GET'])
+def initial():
+    db.create_db()
+    db.input_data()
+    return jsonify({"success":"true"})
+
+@app.route('/reset', methods=['GET'])
+def reset():
+    db.remove_table()
+    return jsonify({"success":"true"})
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
