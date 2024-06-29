@@ -1,11 +1,12 @@
 import midtransclient
 from uuid import uuid4
 import json
+from enviroment import mid_trans_client, mid_trans_server
 # Initialize the Midtrans Snap API client
 snap = midtransclient.Snap(
     is_production=False,  # Set to True if you are in production environment
-    server_key='SB-Mid-server-GgmwtSurML6QrjDwr8tyqfDc',  # Replace with your actual server key
-    client_key='SB-Mid-client-rbE92L0IXyY636eJ'   # Replace with your actual client key
+    server_key=mid_trans_server,  # Replace with your actual server key
+    client_key=mid_trans_client   # Replace with your actual client key
 )
 
 # Prepare the transaction details
