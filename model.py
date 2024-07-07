@@ -41,7 +41,7 @@ def add_user(username, email, hashed_password):
 def get_products():
     try:
         with db.cursor(pymysql.cursors.DictCursor) as cursor:
-            cursor.execute("SELECT * FROM products")
+            cursor.execute("SELECT * FROM detection_product.products")
             products = cursor.fetchall()
             return products
     except pymysql.MySQLError as e:

@@ -64,10 +64,10 @@ def login():
         return jsonify(status="error", message=str(e)), 500
 
 @app.route('/products', methods=['GET'])
-def get_products():
+def products_get():
     try:
         res = get_products()
-        return jsonify(status="success", products=res), 200
+        return jsonify(status="success", products = res), 200
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
@@ -150,7 +150,7 @@ def upload_file():
              item['product_id'] ,item['price'] = get_product_price_by_name(item['product'])
 
         order_id , token = create_order(user_id, res)
-        return jsonify(status="success", message="File uploaded and order created successfully", order_id=order_id, token=token), 201
+        return jsonify(status="success", message="File uploaded and order created successfully", order_id=order_id,  products=res, token=token), 201
 
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
@@ -177,3 +177,6 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+else :
+    gunicorn_app = app
