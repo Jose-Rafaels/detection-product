@@ -141,7 +141,7 @@ def get_orders_by_user(user_id):
 
             for order in orders:
                 sql_details = """
-                    SELECT od.*, p.product_name AS product_name
+                    SELECT od.qty, p.product_name, p.price
                     FROM detection_product.order_details od
                     JOIN detection_product.products p ON od.product_id = p.product_id
                     WHERE od.order_id = %s
