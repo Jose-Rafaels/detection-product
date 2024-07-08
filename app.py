@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 import os
 from uuid import uuid4
 from model import *
-from yolov5 import detect
 from helper.password import hash_password, check_password
 from helper.lingkungan import secret_key
 
@@ -137,12 +136,12 @@ def upload_file():
     unique_filename = generate_unique_filename(file)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(filepath)
-
+    from yolov5 import detect
     try:
         res = detect.run(weights=model_path, source=filepath, nosave=True)
         if os.path.exists(f"test-image/{unique_filename}"):
             os.remove(f"test-image/{unique_filename}")
-
+        del detect
         if not res:
             return jsonify(status="error", message="Not Found"), 404
 
