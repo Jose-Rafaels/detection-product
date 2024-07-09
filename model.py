@@ -19,6 +19,16 @@ def get_user_by_username(username):
     except pymysql.MySQLError as e:
         raise Exception(f"Database query failed: {str(e)}")
 
+def get_username_by_user_id(user_id):
+    try:
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql_user = "SELECT username FROM detection_product.users WHERE user_id = %s"
+            cursor.execute(sql_user, (user_id,))
+            user = cursor.fetchone()
+            return user['username'] if user else None
+    except pymysql.MySQLError as e:
+        raise Exception(f"Database query failed: {str(e)}")
+
 def get_user_by_email(email):
     try:
         with db.cursor(pymysql.cursors.DictCursor) as cursor:
