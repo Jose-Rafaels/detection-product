@@ -24,6 +24,17 @@ def generate_unique_filename(file):
 def index():
     return jsonify({"status": "success"})
 
+@app.route('/user_id/<user_id>', methods=['GET'])
+def get_username(user_id):
+    try:
+        username = get_username_by_user_id(user_id)
+        if username:
+            return jsonify(status="success", username=username), 200
+        else:
+            return jsonify(status="error", message="User not found"), 404
+    except Exception as e:
+        return jsonify(status="error", message=str(e)), 500
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
