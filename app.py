@@ -181,6 +181,9 @@ def handle_webhook():
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify(status="error", message="Endpoint not found"), 404
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
