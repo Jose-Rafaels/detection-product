@@ -158,8 +158,8 @@ def upload_file():
     file.save(filepath)
     try:
         res = detect.run(weights=model_path, source=filepath, nosave=True)
-        if os.path.exists(f"test-image/{unique_filename}"):
-            os.remove(f"test-image/{unique_filename}")
+        if os.path.exists(f"{app.config['UPLOAD_FOLDER']}/{unique_filename}"):
+            os.remove(f"{app.config['UPLOAD_FOLDER']}/{unique_filename}")
         # del detect
         if not res:
             return jsonify(status="error", message="Not Found"), 404
