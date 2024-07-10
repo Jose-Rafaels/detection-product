@@ -4,6 +4,7 @@ from uuid import uuid4
 from model import *
 from helper.password import hash_password, check_password
 from helper.lingkungan import secret_key
+from yolov5 import detect
 
 app = Flask(__name__)
 
@@ -115,6 +116,14 @@ def get_user_orders(user_id):
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
+@app.route('/order', methods=['GET'])
+def get_orders_today_endpoint():
+    try:
+        orders = get_orders_today()
+        return jsonify(status="success", orders=orders), 200
+    except Exception as e:
+        return jsonify(status="error", message=str(e)), 500
+
 @app.route('/charge', methods=['POST'])
 def add_new_payment():
     data = request.get_json()
@@ -147,12 +156,11 @@ def upload_file():
     unique_filename = generate_unique_filename(file)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
     file.save(filepath)
-    from yolov5 import detect
     try:
         res = detect.run(weights=model_path, source=filepath, nosave=True)
         if os.path.exists(f"test-image/{unique_filename}"):
             os.remove(f"test-image/{unique_filename}")
-        del detect
+        # del detect
         if not res:
             return jsonify(status="error", message="Not Found"), 404
 

@@ -134,7 +134,7 @@ def get_order_details(order_id):
                 cursor.execute(sql_details, (order_id,))
                 order['items'] = cursor.fetchall()
 
-                sql_payment = "SELECT * FROM detection_product.payment WHERE order_id = %s"
+                sql_payment = "SELECT payment_method, payment_status FROM detection_product.payment WHERE order_id = %s"
                 cursor.execute(sql_payment, (order_id,))
                 order['payment'] = cursor.fetchone()
 
@@ -159,7 +159,28 @@ def get_orders_by_user(user_id):
                 cursor.execute(sql_details, (order['order_id'],))
                 order['items'] = cursor.fetchall()
 
-                sql_payment = "SELECT * FROM detection_product.payment WHERE order_id = %s"
+                sql_payment = "SELECT payment_method, payment_status FROM detection_product.payment WHERE order_id = %s"
+                cursor.execute(sql_payment, (order['order_id'],))
+                order['payment'] = cursor.fetchone()
+
+            return orders
+    except pymysql.MySQLError as e:
+        raise Exception(f"Database query failed: {str(e)}")
+    
+def get_orders_today():
+    try:
+        with db.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql_orders = """
+                SELECT o.*, u.username
+                FROM detection_product.orders o
+                JOIN detection_product.users u ON o.user_id = u.user_id
+                WHERE DATE(o.time) = CURDATE()
+            """
+            cursor.execute(sql_orders)
+            orders = cursor.fetchall()
+
+            for order in orders:
+                sql_payment = "SELECT payment_method, payment_status FROM detection_product.payment WHERE order_id = %s"
                 cursor.execute(sql_payment, (order['order_id'],))
                 order['payment'] = cursor.fetchone()
 
@@ -174,8 +195,8 @@ def process_payment(order_details, payment_type):
 
         with db.cursor() as cursor:
             # Update the total price in the orders table
-            sql_update_order = "UPDATE detection_product.orders SET total_price = %s WHERE order_id = %s"
-            cursor.execute(sql_update_order, (gross_amount, order_id))
+            sql_update_order = "UPDATE detection_product.orders SET WHERE order_id = %s"
+            cursor.execute(sql_update_order, (order_id))
 
             # Insert into the payments table
             sql_payment = "INSERT INTO detection_product.payment (order_id, payment_method, payment_status) VALUES (%s, %s, %s)"
