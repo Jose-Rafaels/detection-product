@@ -32,7 +32,7 @@ def get_username_by_user_id(user_id):
 def get_user_by_email(email):
     try:
         with db.cursor(pymysql.cursors.DictCursor) as cursor:
-            sql = "SELECT user_id, username, email, password FROM detection_product.users WHERE email = %s"
+            sql = "SELECT * FROM detection_product.users WHERE email = %s"
             cursor.execute(sql, (email,))
             return cursor.fetchone()
     except pymysql.MySQLError as e:
