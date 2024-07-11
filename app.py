@@ -68,7 +68,7 @@ def login():
     try:
         user = get_user_by_email(email)
         if user and check_password(password, user['password']):
-            return jsonify(status="success", message="Login successful", user_id=user['user_id'], username=user['username']), 200
+            return jsonify(status="success", message="Login successful", user_id=user['user_id'], username=user['username'],role=user['role']), 200
         else:
             return jsonify(status="error", message="Invalid email or password"), 401
     except Exception as e:
