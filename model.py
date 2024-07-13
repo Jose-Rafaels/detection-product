@@ -194,9 +194,6 @@ def process_payment(order_details, payment_type):
         gross_amount = order_details['gross_amount']
 
         with db.cursor() as cursor:
-            # Update the total price in the orders table
-            sql_update_order = "UPDATE detection_product.orders SET WHERE order_id = %s"
-            cursor.execute(sql_update_order, (order_id))
 
             # Insert into the payments table
             sql_payment = "INSERT INTO detection_product.payment (order_id, payment_method, payment_status) VALUES (%s, %s, %s)"
