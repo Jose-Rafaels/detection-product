@@ -117,6 +117,16 @@ def add_payment(order_id, payment_info):
         db.rollback()
         raise Exception(f"Database payment insertion failed: {str(e)}")
 
+def check_order_in_payment(order_id):
+    try:
+        with db.cursor() as cursor:
+            sql_check = "SELECT COUNT(order_id) FROM detection_product.payment WHERE order_id = %s"
+            cursor.execute(sql_check, (order_id,))
+            result = cursor.fetchone()
+            return result[0] > 0
+    except pymysql.MySQLError as e:
+        raise Exception(f"Database query failed: {str(e)}")
+
 def get_order_details(order_id):
     try:
         with db.cursor(pymysql.cursors.DictCursor) as cursor:
