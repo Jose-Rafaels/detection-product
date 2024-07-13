@@ -131,11 +131,11 @@ def add_new_payment():
     order_details = data['order_details']
 
     try:
-        if not check_order_in_payment(order_details['order_id'])
+        if not check_order_in_payment(data['order_details']['order_id']) :
             process_payment(order_details, payment_type)
             return jsonify(status="success", message="Payment processed successfully"), 201
         else : 
-            return jsonify(status="error", message=f"Payment already exists for order_id: {order_id}"), 400
+            return jsonify(status="error", message=f"Payment already exists for order_id: {data['order_details']['order_id']}"), 400
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
