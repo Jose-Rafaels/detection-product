@@ -131,7 +131,7 @@ def add_new_payment():
     order_details = data['order_details']
 
     try:
-        if not check_order_in_payment(order_details['order_id'])
+        if not check_order_in_payment(order_details['order_id']) : 
             process_payment(order_details, payment_type)
             return jsonify(status="success", message="Payment processed successfully"), 201
         else : 
