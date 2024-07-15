@@ -93,7 +93,7 @@ def create_order(user_id, order_items):
                 price = get_product_price(item['product_id'])
                 total_price += price * item['total']
 
-            sql_order = "INSERT INTO detection_product.orders (order_id, time, total_price, user_id) VALUES (%s, NOW(), %s, %s)"
+            sql_order = "INSERT INTO detection_product.orders (order_id, total_price, user_id) VALUES (%s, %s, %s)"
             cursor.execute(sql_order, (order_id, total_price, user_id))
 
             for item in order_items:
