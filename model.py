@@ -9,6 +9,14 @@ db = pymysql.connect(
     password=database_password,
     db=database_name
 )
+def check_database_connection():
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        return True
+    except pymysql.MySQLError as e:
+        print(f"Database connection failed: {str(e)}")
+        return False
 
 def get_user_by_username(username):
     try:

@@ -23,7 +23,11 @@ def generate_unique_filename(file):
 
 @app.route('/')
 def index():
-    return jsonify({"status": "success"})
+    db_status = check_database_connection()
+    if db_status:
+        return jsonify({"status": "success", "message": "Database connection successful"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Database connection failed"}), 500
 
 @app.route('/user_id/<user_id>', methods=['GET'])
 def get_username(user_id):
