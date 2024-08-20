@@ -89,7 +89,7 @@ def insert_product():
         return jsonify(status="error", message="Product id, name and price are required"), 400
 
     try:
-        add_product(product_name, price)
+        add_product(product_name, price ,id)
         return jsonify(status="success", message="Product added successfully"), 201
     except Exception as e:
         return jsonify(status="error", message=str(e)), 400
