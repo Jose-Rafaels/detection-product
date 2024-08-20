@@ -67,8 +67,8 @@ def add_product(product_name, price, product_id):
                 raise Exception("Product already exists in the database")
 
             # Insert the new product
-            sql_insert = "INSERT INTO detection_product.products (product_name, price) VALUES (%s, %s)"
-            cursor.execute(sql_insert, (product_name, price))
+            sql_insert = "INSERT INTO detection_product.products (product_id,product_name, price) VALUES (%s, %s)"
+            cursor.execute(sql_insert, (product_id, product_name, price))
             db.commit()
     except pymysql.MySQLError as e:
         db.rollback()
