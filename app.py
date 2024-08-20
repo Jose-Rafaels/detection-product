@@ -78,6 +78,22 @@ def login():
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
+@app.route('/product', methods=['POST'])
+def insert_product():
+    data = request.get_json()
+    product_name = data.get('product_name')
+    price = data.get('price')
+    id = data.get('product_id')
+
+    if not product_name or not price or not id: 
+        return jsonify(status="error", message="Product id, name and price are required"), 400
+
+    try:
+        add_product(product_name, price)
+        return jsonify(status="success", message="Product added successfully"), 201
+    except Exception as e:
+        return jsonify(status="error", message=str(e)), 400
+
 @app.route('/products', methods=['GET'])
 def products_get():
     try:

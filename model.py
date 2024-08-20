@@ -55,6 +55,25 @@ def add_user(username, email, hashed_password):
     except pymysql.MySQLError as e:
         raise Exception(f"Database insert failed: {str(e)}")
 
+def add_product(product_name, price):
+    try:
+        with db.cursor() as cursor:
+            # Check if the product already exists
+            sql_check = "SELECT COUNT(*) FROM detection_product.products WHERE product_name = %s OR product_id = %s"
+            cursor.execute(sql_check, (product_name,))
+            result = cursor.fetchone()
+
+            if result[0] > 0:
+                raise Exception("Product already exists in the database")
+
+            # Insert the new product
+            sql_insert = "INSERT INTO detection_product.products (product_name, price) VALUES (%s, %s)"
+            cursor.execute(sql_insert, (product_name, price))
+            db.commit()
+    except pymysql.MySQLError as e:
+        db.rollback()
+        raise Exception(f"Database operation failed: {str(e)}")
+
 
 def get_products():
     try:
