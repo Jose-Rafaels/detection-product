@@ -78,7 +78,7 @@ def login():
     except Exception as e:
         return jsonify(status="error", message=str(e)), 500
 
-@app.route('/product', methods=['POST'])
+@app.route('/products', methods=['POST'])
 def insert_product():
     data = request.get_json()
     product_name = data.get('product_name')
